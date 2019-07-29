@@ -179,5 +179,94 @@ public class C3All {
             System.out.println("A Blank!");
         }
 
+        //char类型是Java字符串的组成元素，char类型类型是一个采用UTF-16编码表示Unicode码点的代码单元
+        //大多常用Unicode字符使用一个代码单元就可以表示，而辅助字符需要一对代码单元表示
+        //length方法返回采用utf-16编码表示的给定字符串所需要的代码单元数量
+        //例如“Hello”的length是5
+
+        //若想要得到码点的数量，即实际长度，可以调用
+        //int cpCount = greeting.codePointCount(0, greeting.length());
+        //调用s.charAt(n)返回位置n的代码单元，n介于0~s,length()-1之间
+        //要想得到第i个码点，应该使用下列语句
+        //int index = greeting.offsetByCodePoints(0,i);
+        //int cp = greeting.codePointAt(index);
+
+        //与C一样代码单元与码点从0开始计数
+        //如果要遍历一个字符串，并且依次查看每一个码点，可以使用下列语句
+        //int cp = sentence.codePointAt(i);
+        //if (Character.isSupplementaryCodePoint(cp)) i+=2;
+        //else i++;
+
+        //可以使用下列语句实现回退操作
+        //i--;
+        //if(Character.isSurrogate(sentence.charAt(i))) i--;
+        //int cp = sentence.codePointAt(i);
+
+        //但上述方法很麻烦，更容易的方法是使用codePoints方法，它会生成一个int值的“流”
+        //每个int值对应一个码点。可以将它转换为一个数组，再完成遍历
+        //int[] codePoints = str.codePoints().toArray();
+        //反之，要把一个码点数组转换为一个字符串，可以使用构造函数
+        //String str = new String(codePoints,0,codePoints.length);
+
+        //String API
+        //Java中String类包含了50多个方法，常用的方法以下
+        //每一个API的注释都以形如java.lang.String的类名开始。
+        //类名之后是一个或多个方法的名字 解释和参数描述
+
+        // • char charAt (int index) 返回给定位置的代码单元。除非对底层的代码单元感兴趣， 否则不需要调用这个 方法。
+        // • int codePointAt(int Index) 5.0 返回从给定位置开始的码点。
+        // • int offsetByCodePoints(int startlndex, int cpCount) 5.0 返回从 startlndex 代码点开始，位移 cpCount 后的码点索引。
+        // • int compareTo(String other) 按照字典顺序，如果字符串位于 other 之前，返回一个负数；如果字符串位于 other 之 后，返回一个正数；如果两个字符串相等，返回 0。
+        // • IntStream codePoints() 8 将这个字符串的码点作为一个流返回。调用 toArray将它们放在一个数组中。
+        // • new String(int[] codePoints, int offset, int count) 5.0 用数组中从 offset 开始的 count 个码点构造一个字符串。
+        // • boolean equals(0bject other) 如果字符串与 other 相等， 返回 true。
+        // •boolean equalsIgnoreCase(String other) 如果字符串与 other 相等 （忽略大小写)， 返回 tme。
+        // •boolean startsWith(String prefix )
+        // •boolean endsWith(String suffix ) 如果字符串以 suffix 开头或结尾， 则返回 true。
+        // •int indexOf(String str)
+        // •int indexOf(String str, int fromlndex)
+        // •int indexOf(int cp)
+        // •int indexOf(int cp, int fromlndex) 返回与字符串 str 或代码点 cp 匹配的第一个子串的开始位置。这个位置从索引 0 或 fromlndex 开始计算。 如果在原始串中不存在 str， 返回 -1。
+        // •int 1astIndexOf(String str)
+        // •Int 1astIndexOf(String str, int fromlndex)
+        // •int lastindexOf(int cp)
+        // •int 1astindexOf(int cp, int fromlndex) 返回与字符串 str 或代码点 cp 匹配的最后一个子串的开始位置。这个位置从原始串尾 端或 fromlndex 开始计算。
+        // •int 1ength( ) 返回字符串的长度。
+        // •int codePointCount(int startlndex, int endlndex) 5.0 返回 startlndex 和 endludex-l 之间的代码点数量。没有配成对的代用字符将计入代码点。 參 String replace(CharSequence oldString,CharSequence newString) 返回一个新字符串。这个字符串用 newString 代替原始字符串中所有的 oldString。可 以用 String 或 StringBuilder 对象作为 CharSequence 参数。
+        // •String substring(int beginlndex) 參 String substring(int beginlndex, int endlndex) 返回一个新字符串。这个字符串包含原始字符串中从 beginlndex 到串尾或 endlndex-l 的所有代码单元。
+        // •String toLowerCase( ) 參 String toUpperCase( ) 返回一个新字符串。这个字符串将原始字符串中的大写字母改为小写，或者将原始字 符串中的所有小写字母改成了大写字母。
+        // •String trim( ) 返回一个新字符串。这个字符串将删除了原始字符串头部和尾部的空格。
+        // •String join(CharSequence delimiter, CharSequence... elements) 8 返回一个新字符串， 用给定的定界符连接所有元素。
+
+        //构建字符串
+        //每次连接字符串都会构建一个新的String对象，既耗时又浪费空间
+        //使用StringBuilder类可以避免这个问题发生
+        //首先构建一个空的字符串构建器：
+        //StringBuilder builder = new StringBuilder();
+        //当每次需要添加一部分内容时需要调用append方法
+        //builder.append(ch); //appends a single character
+        //builder.append(str); //appends a string
+
+        //在需要构建字符串时就调用toString方法，将可以得到一个String对象，其中包含了构建器
+        //中的字符序列
+        //String completedString = builder.toString();
+
+        //StringBuilder类是5.0中引入的，前身是StringBuffer其效率稍有些低，但允许采用多线程的方式
+        //执行添加或删除字符的操作，如果所有字符串在一个单线程中编辑，则应该使用StringBuilder代替它，
+        //这两个类的API是相同的
+
+        // • StringBuilder() 构造一个空的字符串构建器。
+        // • int length() 返回构建器或缓冲器中的代码单元数量。
+        // • StringBui1der append(String str) 追加一个字符串并返回 this。
+        // • StringBui1der append(char c) 追加一个代码单元并返回 this。
+        // • StringBui1der appendCodePoint(int cp) 追加一个代码点，并将其转换为一个或两个代码单元并返回 this。
+        // • void setCharAt(int i,char c) 将第 i 个代码单元设置为 c。
+        // • StringBui1der insert(int offset,String str) 在 offset 位置插入一个字符串并返回 this。
+        // • StringBuilder insert(int offset,Char c) 在 offset 位置插入一个代码单元并返回 this。
+        // • StringBui1der delete(1nt startindex,int endlndex) 删除偏移量从 startindex 到-endlndex-1 的代码单元并返回 this。
+        // • String toString() 返回一个与构建器或缓冲器内容相同的字符串
+        //p55
+
+
     }
 }
