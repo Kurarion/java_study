@@ -1,10 +1,36 @@
 package Chapter3;
 
+import java.io.Console;
+import java.util.Scanner;
+//import java.util.*;
+
 public class C3All {
     //与C++不同的是，main需要有一个包装类来进行调用
     //即public 且 static属性的main方法
     //注意：class文件名需要与类名（主调用的）一致
     public static void main(String[] args) {
+        //测试StringBuilder
+        //ExTestStringBuilder();
+
+        //测试Null与空白字符串String对象
+        //ExNullBlank();
+
+        //测试输入Scanner
+        //ExScanner1();
+
+        //测试输入Console
+        //ExConsole();
+
+        //格式化输入
+        ExFormatOutput();
+    }
+
+    private static void Print(String s){
+        System.out.println("-----------");
+        System.out.println(s);
+    }
+
+    public static void ExSomeThing(){
         //Java同C++一样是一个强类型语言
         //与C++不同，数据类型的大小与编译器无关，解决了移植问题
         //  int 4字节
@@ -120,20 +146,79 @@ public class C3All {
         //现在，可以声明这种类型的变量
         //Size s = Size.MEDIUM;
         //注意默认有一个null值：表示这个变量没有被设置任何值
+    }
 
+    public static void ExScanner1() {
+        //空串与Null串
+        //长度为0的“”是空串 str.length()==0;或str.equals("");
+        //空串是一个Java对象，有自己的串长度0和内容空，不过String变量还可以存入一个特殊的值
+        //名为null，这表示目前没有任何对象与该变量关联
+        //可以使用str == null
+        //有时需要检查一个字符串不是null也不是空串
+        //则： if(str!=null && str.length() != 0 )
+        //注意一定要先检查null否则不能在null上调用方法
+        //p49
+
+        Scanner in = new Scanner(System.in);
+        System.out.println("===What is you name?===");
+        String name;
+        //name = in.nextLine();
+        name = in.next();
+        System.out.println("You name is : "+name);
+
+
+        // • Scanner (InputStream in) 用给定的输人流创建一个 Scanner 对象。
+        // • String nextLine( ) 读取输入的下一行内容。
+        // • String next( ) 读取输入的下一个单词（以空格作为分隔符)。
+        // • int nextInt( )
+        // • double nextDouble( ) 读取并转换下一个表示整数或浮点数的字符序列。
+        // • boolean hasNext( ) 检测输人中是否还有其他单词。
+        // • boolean hasNextInt( )
+        // • boolean hasNextDouble( ) 检测是否还有表示整数或浮点数的下一个字符序列。
+    }
+
+    public static void ExNullBlank() {
+        //输入输出
+        //想要通过控制台进行输入，首先需要构造一个Scanner对象，并与标准输入流System.in关联
+        //Scanner in = new Scanner(System.in);
+        //现在就可以使用Scanner类的各种方法实现输入操作了，例如nextLine方法将输入一行
+
+        //这里使用nextLine是可以包含空格的，要想读取一个单词（以空格符为分隔符）就调用in.next();
+        //如果是一个整数的话。使用nextInt();
+        //类似的，浮点数使用nextDouble();
+        //Scanner类定义在java.util.*;
+        //import java.util.*;
+        //当使用的类不是定义在基本java.lang包中时，一定使用import指示字符将相应的包加载进来
+
+        //如果想要输入一个密码可以使用以下代码
+
+
+        String test_null = null;
+        //必须定义才能通过编译...
+        if (test_null == null){
+            System.out.println("A Null!");
+        }else if(test_null.equals("")){
+            System.out.println("A Blank!");
+        }
+    }
+
+    public static void ExTestStringBuilder(){
         //字符串
         //Java字符串就是Unicode字符序列，Java没有内置的字符串类型，而是在标准Java类库中提供一个预定
         //义类，叫做String
-        //String e = "";
+        String e = "";
         //String类的substring 方法可以从一个较大的字符串中提取出一个子串
-        //String greeting = "hello";
-        //String s = greeting.substring(0,3); //hel
+        String greeting = "hello";
+        String s = greeting.substring(0,3); //hel
+        Print(s);
+
 
         //拼接
         //Java使用+可以进行两个串的连接
         //注意：任何一个Java对象都可以转换成字符串
         //如果需要把多个字符串放在一起，用一个定界符分隔，可以使用静态join方法
-        //String all = String.join(" / ","S","M","L","XL"); //"S / M / L / XL"
+        String all = String.join(" / ","S","M","L","XL"); //"S / M / L / XL"
+        Print(all);
 
         //不可变字符串
         //String类没有提供用于修改字符串的方法！
@@ -155,29 +240,11 @@ public class C3All {
         //可以使用equals方法检测两个字符串是否相等
         //s.equals(t);
         //可以是字符串变量，也可以是字符串字面量
-        //“Hello”.equals(greeting);
+        "Hello".equals(greeting);
         //要检测两个字符串是否相等但不区分大小写可以使用equalsIgnoreCase
         //"a".equalsIgnoreCase("Hello");
         //注意：一定不要使用==运算符，但C++中的string对象可以（符号重载）
         //也可以使用类型C的strcmp的compareTo() == 0
-
-        //空串与Null串
-        //长度为0的“”是空串 str.length()==0;或str.equals("");
-        //空串是一个Java对象，有自己的串长度0和内容空，不过String变量还可以存入一个特殊的值
-        //名为null，这表示目前没有任何对象与该变量关联
-        //可以使用str == null
-        //有时需要检查一个字符串不是null也不是空串
-        //则： if(str!=null && str.length() != 0 )
-        //注意一定要先检查null否则不能在null上调用方法
-        //p49
-
-        String test_null = null;
-        //必须定义才能通过编译...
-        if (test_null == null){
-            System.out.println("A Null!");
-        }else if(test_null.equals("")){
-            System.out.println("A Blank!");
-        }
 
         //char类型是Java字符串的组成元素，char类型类型是一个采用UTF-16编码表示Unicode码点的代码单元
         //大多常用Unicode字符使用一个代码单元就可以表示，而辅助字符需要一对代码单元表示
@@ -185,17 +252,30 @@ public class C3All {
         //例如“Hello”的length是5
 
         //若想要得到码点的数量，即实际长度，可以调用
-        //int cpCount = greeting.codePointCount(0, greeting.length());
+        greeting = "⑪一二三四五";
+        int cpCount = greeting.codePointCount(0, greeting.length());
+        Print("12345的长度： " + cpCount);
         //调用s.charAt(n)返回位置n的代码单元，n介于0~s,length()-1之间
         //要想得到第i个码点，应该使用下列语句
-        //int index = greeting.offsetByCodePoints(0,i);
-        //int cp = greeting.codePointAt(index);
+        //offsetByCodePoints完全没有意思 价值...
+        int index = greeting.offsetByCodePoints(1,2);
+        int cp = greeting.codePointAt(index);
+        Print("12345的第2个码点的下标是："+index+"\r\n此处的码点是："+cp);
+        int[] testPoints = greeting.codePoints().toArray();
+        Print("codePoints()返回的流：");
+        for (int x=0;x<testPoints.length;++x) {
+            System.out.print(" "+testPoints[x]);
+        }
+        System.out.println();
 
         //与C一样代码单元与码点从0开始计数
         //如果要遍历一个字符串，并且依次查看每一个码点，可以使用下列语句
-        //int cp = sentence.codePointAt(i);
-        //if (Character.isSupplementaryCodePoint(cp)) i+=2;
-        //else i++;
+        String sentence = "哈，悄好";
+        int i = 0;
+        int cpp = sentence.codePointAt(2);
+        if (Character.isSupplementaryCodePoint(cpp)) i+=2;
+        else i++;
+        Print("sentence的下标为2的处的码点是："+cpp+"\r\n之后i= "+i);
 
         //可以使用下列语句实现回退操作
         //i--;
@@ -204,9 +284,14 @@ public class C3All {
 
         //但上述方法很麻烦，更容易的方法是使用codePoints方法，它会生成一个int值的“流”
         //每个int值对应一个码点。可以将它转换为一个数组，再完成遍历
-        //int[] codePoints = str.codePoints().toArray();
+        int[] codePoints = sentence.codePoints().toArray();
         //反之，要把一个码点数组转换为一个字符串，可以使用构造函数
-        //String str = new String(codePoints,0,codePoints.length);
+        String str2 = new String(codePoints,0,codePoints.length);
+        Print("codePoints()返回的流：");
+        for (int x=0;x<codePoints.length;++x) {
+            System.out.print(" "+codePoints[x]);
+        }
+        System.out.println();
 
         //String API
         //Java中String类包含了50多个方法，常用的方法以下
@@ -250,7 +335,12 @@ public class C3All {
         //在需要构建字符串时就调用toString方法，将可以得到一个String对象，其中包含了构建器
         //中的字符序列
         //String completedString = builder.toString();
-
+        StringBuilder test_build = new StringBuilder();
+        for (int x = 0; x < 10 ; ++x){
+            test_build.appendCodePoint(x+65);
+            test_build.append("/");
+        }
+        Print(test_build.toString());
         //StringBuilder类是5.0中引入的，前身是StringBuffer其效率稍有些低，但允许采用多线程的方式
         //执行添加或删除字符的操作，如果所有字符串在一个单线程中编辑，则应该使用StringBuilder代替它，
         //这两个类的API是相同的
@@ -266,7 +356,33 @@ public class C3All {
         // • StringBui1der delete(1nt startindex,int endlndex) 删除偏移量从 startindex 到-endlndex-1 的代码单元并返回 this。
         // • String toString() 返回一个与构建器或缓冲器内容相同的字符串
         //p55
+    }
 
+    public static void ExConsole(){
+        Console cons = System.console();
+        //实际使用IDE直接调试无法获取控制台
+        //当使用cmd调用java执行时可以获取
+        //此时密码是不可见的 直接打印也是乱码
+        if (cons != null) {
+            String username = cons.readLine("User name: ");
+            char[] passwd = cons.readPassword("Password: ");
 
+            Print("Welcome: "+username);
+            Print("PS: "+new String(passwd));
+        }
+
+        // • static Console console( ) 6
+        // 如果有可能进行交互操作， 就通过控制台窗口为交互的用户返回一个 Console 对象， 否则返回 null。对于任何一个通过控制台窗口启动的程序， 都可使用 Console对象。 否则，其可用性将与所使用的系统有关s
+        // • static char[] readPassword(String prompt, Object...args)
+        // • static String readLine(String prompt, Object...args)
+        // 显示字符串 prompt 并且读取用户输入，直到输入行结束。args 参数可以用来提供输人 格式。有关这部分内容将在下一节中介绍。
+    }
+
+    public static void ExFormatOutput(){
+        double x = 10000.0/3;
+        System.out.println(x);
+        Print(""+ x);
+        System.out.printf("%8.2f",x);
+        //p58
     }
 }
