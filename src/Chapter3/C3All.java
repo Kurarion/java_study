@@ -1,10 +1,15 @@
 package Chapter3;
 
 import java.io.Console;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.Scanner;
 //import java.util.*;
 
 public class C3All {
+    static final private String FileDir = "D:\\Project\\Java\\java_study\\src\\Chapter3\\";
     //与C++不同的是，main需要有一个包装类来进行调用
     //即public 且 static属性的main方法
     //注意：class文件名需要与类名（主调用的）一致
@@ -22,7 +27,13 @@ public class C3All {
         //ExConsole();
 
         //格式化输入
-        ExFormatOutput();
+        //ExFormatOutput();
+
+        //文件输入与输出
+        //ExFileIO();
+
+        //控制流程
+        ExControlPath();
     }
 
     private static void Print(String s){
@@ -384,5 +395,127 @@ public class C3All {
         Print(""+ x);
         System.out.printf("%8.2f",x);
         //p58
+
+        //在格式化输出时以%字符开始的格式说明符用相应的参数替换
+        //f表示浮点数 s表示字符串 d表示十进制整数
+        //x表示十六进制 e指数浮点数 a十六进制浮点数
+        //c表示字符 b表示boolean h表示散列码
+        //另外可以给出控制格式化输出的各种标志
+        //例如逗号标志增加了分组的分隔符
+        System.out.println();
+        System.out.printf("%,.2f",x);
+
+        //+打印正数与负数的符号
+        System.out.println();
+        System.out.printf("%+f",x);
+        //空格在正数之前添加空格,只能加一个
+        System.out.println();
+        System.out.printf("% f",x);
+        //-左对齐 //实际不能通过编译
+        System.out.println();
+        System.out.printf("%f",x);
+        //将负数括在括号内 正数没有效果
+        System.out.println();
+        System.out.printf("%(f",-x);
+        //#包含小数点（对f格式）对(x或o格式)添加0x或0
+        System.out.println();
+        System.out.printf("%#f",x);
+        System.out.println();
+        System.out.printf("%#x",16);
+        System.out.println();
+        System.out.printf("%#o",8);
+        //给定被格式化的参数索引
+        //如：%1$d,%1$x将以10进制与16进制打印第一个参数【参数索引从1开始而不是0】
+        //<
+        //格式化前面说明的数值。例如,%d%<x以10进制与16进制打印同一个数值
+
+        //可以使用s转换符格式化任意的对象，对于任意实现了Formattable接口的对象都将调用formatTo方法
+        //否则将调用toString方法
+
+        //可以使用静态的String.format方法创建一个格式化的字符串而不打印输出:
+        String name = "Wu";
+        //注意Java不支持自动的类型转换(大转小也不可)
+        //float age = (float) 15.1; //不强制转换也是错的
+        //说明字面值的浮点数使用的double范围
+        int age = 16;
+        String message = String.format("Hello, %s, Next year, you'll be %d", name, age);
+        Print(message);
+
+        //此外还支持日期的格式化但废弃
+        //例如 tc（完整的日期时间） tF（ISO 8601日期） tD（美国格式的日期） tT(24小时时间)
+        //。。。
+        //%（?$1$）(标志+)（宽度8）（.精度.5）（转换字符f）
+
+
+    }
+
+    public static void ExFileIO(){
+        //文件输入与输出
+        //需要一个用File对象构造一个Scanner对象
+        try {
+            String dir = System.getProperty("user.dir");
+            Print(dir);
+            Scanner in = new Scanner(Paths.get(FileDir + "myfile.txt"), "UTF-8");
+
+            Print("Content:");
+            System.out.println(in.nextLine());
+            //如果文件名中包含反斜杠，要在每个反斜杠之前再加一个额外的反斜杠
+            //c:\\mydirectory\\myfile.txt
+
+            //如果想要写入一个文件，需要构造一个PrintWriter对象，在构造器中，只需要提供文件名
+            //PrintWriter out = new PrintWriter("myfile.txt","UTF-8");
+            //如果不存在就创建该文件，可以像输出到System.out一样使用print println以及printf命令
+            //注意：可以构造一个带有字符串参数的Scanner，但这个Scanner将字符串解释为数据，而不是文件名
+            //例如：如果调用 Scanner in = new Scanner("myfile.txt");
+            //这个scanner会将参数作为包含10个字符的数据而不是文件，需要使用Paths.get()方法
+
+            //当指定一个相对文件名时，例如"myfile.txt"或"../xx"
+            //文件位于Java虚拟机启动路径的相对位置，如果在命令行方式下使用下列命令启动程序
+            //java MyProg
+            //启动路径就是命令解释器的当前路径，然而如果使用IDE，那么启动路径由IDE控制。可以使用下面的调用方式找到路径的位置
+            //String dir = System.getProperty("user.dir");
+
+            //记住：如果用一个不存在的文件构造一个Scanner或用一个不能被创建的文件名构造一个PrintWriter那么应付引发
+            //异常
+        }
+        catch (java.io.IOException e){
+
+            Print("File IO filed!");
+            Print("Now Create it:");
+
+            try {
+                System.out.println("Please write:");
+                Scanner in = new Scanner(System.in);
+                String content = in.nextLine();
+                PrintWriter out = new PrintWriter(FileDir + "myfile.txt", StandardCharsets.UTF_8);
+                out.println(content);
+                //注意一定要用close结束，否则内容不会得到保存
+                out.close();
+
+                //注意
+                //当采用命令行方式启动一个程序时，可以使用Shell的重定向语法将任意文件
+                //关联到System.in与System.out:
+                //重要：
+                //java MyProg < myfile.txt > output.txt
+                //这样就不必担心处理IOException异常了
+
+                // Scanner(File f) 构造一个从给定文件读取数据的 Scanner。 參
+                // Scanner(String data) 构造一个从给定字符串读取数据的 Scanner。
+                // 类似于C++的stringstream
+
+                // PrintWriter(String fileName) 构造一个将数据写入文件的 PrintWriter。文件名由参数指定。
+
+                // •static Path get(String pathname) 根据给定的路径名构造一个 Path。
+
+            }
+            catch (IOException ee) {
+                Print("Cant't create it...");
+            }
+        }
+
+    }
+
+    public static void ExControlPath() {
+        //p63
     }
 }
