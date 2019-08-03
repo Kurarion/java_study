@@ -3,8 +3,10 @@ package Chapter3;
 import java.io.Console;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Scanner;
 //import java.util.*;
 
@@ -33,7 +35,19 @@ public class C3All {
         //ExFileIO();
 
         //控制流程
-        ExControlPath();
+        //ExControlPath();
+
+        //大数值
+        //ExBigNum();
+
+        //数组
+        //ExNumGroup();
+
+        //命令行参数
+        //ExCMDParam();
+
+        //数组排序
+        //ExNumGroupSort();
     }
 
     private static void Print(String s){
@@ -517,5 +531,245 @@ public class C3All {
 
     public static void ExControlPath() {
         //p63
+        //与C++的控制流程结构一样，只有很少的例外情况，没有goto语句，但break语句可以带标签
+        //可以利用这个实现从内层循环跳出的目的（这种情况C语言采用goto语句实现）。另外，还有一种变形
+        //的for循环，在C或C++中没有这类循环，有点类似于C#的foreach循环
+
+        //块：block
+        //即复合语句：是指一对大括号括起来的Java语句，块确定了变量的作用域
+        //注意:不能在嵌套的两个块中声明同名的变量:
+        // 如下代码不能通过编译
+//        {
+//            int n;
+//            {
+//                int n;
+//            }
+//        }
+        //C++中可以声明同名的变量在两个嵌套的块中
+        //if与C++一样
+        //else子句与最邻近的if构成一组
+        //没有elseif这个关键字 只有 else if
+
+
+        //循环
+        //do{}while();
+        //for循环是支持迭代的一种通用结构，利用每次迭代之后更新的计数器
+        //或类似的变量来控制迭代的次数
+        //注意：在循环中：检测两个浮点数是否相等需要格外小心
+        //因为精度的原因可能永远不能结束
+
+        //多重选择switch
+//        int choice;
+//        switch (choice){
+//            case 0:
+//                break;
+//            case 1:
+//                break;
+//            default:
+//                break;
+//        }
+        //因为break的必需，可能会引发错误
+        //case的标签可以是：类型为char byte short int的常量表达式
+        //枚举常量
+        //从Java SE7 开始 case标签还可以是字符串字面量
+        //使用枚举时不必在每个标签中指明枚举名
+        //Size sz;
+        //switch(sz)
+        //{
+        //  case SMALL: //不需要使用Size.SMALL
+
+        //中断控制流程语句
+        //break
+        //与C++不同 Java提供了一种带标签的break语句
+        //用于跳出多重嵌套的循环语句
+        //注意：标签必须放在希望跳出的最外层循环之前，并且必须紧跟一个冒号
+        //当使用break 标签后：会跳转到带标签的语句块的末尾
+        //read_date:
+        //while(..){...break read_date;}
+        //something()//break后执行此句
+        //只能跳出语句块 不能跳入语句块
+        //continue
+        //将控制转移到最内层循环的首部
+
+    }
+
+    public static void ExBigNum(){
+        //可以使用java.math包中的两个有用的类
+        //BigInteger和BigDecimal
+        //这两个类可以处理包含任意长度数字序列的数值
+        //使用静态的valueOf方法可以将普通的数值转换为大数值
+        BigInteger a = BigInteger.valueOf(100);
+        //不过不能使用+ *这些运算符处理大数值
+        BigInteger b = BigInteger.valueOf(2);
+        BigInteger c = a.add(b);
+        BigInteger d = c.multiply(b.add(BigInteger.valueOf(2)));
+        //与C++不同，Java没有提供运算符重载功能，因此只能使用方法进行计算
+        //但的确在字符串连接重载了+运算符
+
+        // • BigInteger add(BigInteger other)
+        // • BigInteger subtract(BigInteger other)
+        // • BigInteger multiply(BigInteger other)
+        // • BigInteger divide(BigInteger other)
+        // • BigInteger mod(BigInteger other) 返冋这个大整数和另一个大整数 other•的和、差、 积、 商以及余数。
+        // • int compareTo(BigInteger other) 如果这个大整数与另一个大整数 other 相等， 返回 0; 如果这个大整数小于另一个大整 数 other, 返回负数； 否则， 返回正数。
+        // • static BigInteger valueOf(1ong x) 返回值等于 x 的大整数。
+
+    }
+
+    public static void ExNumGroup(){
+        //数组
+        //Java的数组是一个复杂的数据结构 由length公共成员，以及众多的方法可以看出
+        //而C++的内置数组（非array）完全可以看作一连串的数据区域，只有第一个元素的内存地址（指针）
+        int[] a;//只是声明了变量a，并没有将a初始化为一个真正的数组
+        //int aa[];//也可以 不推荐
+        //应该使用new运算符创建数组
+        int []b = new int[100];
+        //int b[100]; //这样的语句在Java中是不合法的
+        //在C++中，这个语句有声明也同时进行了定义（栈空间上的内存分配）但是没有初始化分配的内存，不能直接使用
+        //在Java中，没有声明与定义的区别，但有初始化之分，并且由初始化决定变量的“大小”
+        //而C++中的内置数组声明定义需要大小这个信息
+
+        //同时使用new int[]时不要求是常量：new int[n]会创建一个长度为n的数组
+        //与C++的new可能类似，都是在堆中分配的内存，但Java会直接初始化分配的内存为类型默认值
+        //对于String类型，则会初始化为一个特殊的值null表示这些元素还未存放任何对象
+        String[] names = new String[2];
+        if(names[0]==null){
+            System.out.println("IS NULL!");//会输出IS NULL
+        }
+
+        //一旦创建了数组就不能改变大小,否则使用数组列表(array list)
+        //如果创建了一个100个元素的数组，并且试图访问元素a[100]
+        //程序会引发“array index out of bounds”异常
+        //array.length可以获得长度 注意是一个公共的成员变量不是一个方法
+        //
+        //for(int i =0; i<a.length; i++)
+
+        //for each循环
+        //Java有一种功能很强的循环结构，可以用来依次处理数组中的每个元素
+        //其他类型元素集合也可
+        //for(variable: collection) statement
+        //collection这一集合表达式必须是一个数组或是一个实现了Iterable接口的类对象
+        //例如ArrayList
+        for(int element:b){
+            //do something
+        }
+        //不过C++11也有相似的语法
+        //有一个更加简单的方式打印数组中的所有值：利用Arrays类的toString方法
+        //调用Arrays.toString(a)返回一个包含数组元素的字符串，这些元素被放置在括号内
+        //用逗号分隔，例如："[2,3,4,5,6]"
+
+        //数组初始化以及匿名数组
+        //在Java中，提供了一种创建数组对象并同赋予初始值 的简化书写形式
+        int[] smallPrimes = {2,3,5,7,11,13};
+        //与C++相似，不需要使用new
+        //甚至可以初始化一个匿名数组
+        //new int[] {2,3,4,5,6,7}
+        //这种表示法将创建一个新数组并利用括号中提供的值进行初始化
+
+        //在Java中允许数组的长度为0，在编写一个结果为数组的方法时
+        //如果碰巧结果为空就可以使用长度为0的数组
+        //new elementType[0];
+        //注意：数组长度为0与null不同
+
+        //数组拷贝
+        //在Java中，允许将一个数组变量拷贝给另一个数组变量，这时两个变量将引用同一个数组
+        //即浅拷贝
+        //如果希望深拷贝
+        //需要使用Arrays类的copyOf方法
+        int[] luckyNumbers = new int[] {2,3,4};
+        int[] copiedLuckyNumbers = Arrays.copyOf(luckyNumbers, luckyNumbers.length);
+        //第2个参数是新数组的长度，这个方法通常用于增加数组的大小
+        luckyNumbers = Arrays.copyOf(luckyNumbers, 2 * luckyNumbers.length);
+        //如果数组元素是数值型，那么多余的元素将被赋值为0，如果数组元素是boolean则为false
+        //相反，如果长度小于原始数组的长度，则只拷贝最前面的数据元素
+
+        //注意：Java数组与C++数组在堆栈上有很大不同
+        //但基本上与分配在堆(heap)的数组指针一样
+        //即
+        //int[] a = new int[100];//java
+        //不同于
+        //int a[100];//C++
+        //而等同于
+        //int *a = new int[100];//C++
+        //Java中的【】运算符被预定义为检查数组边界，而且没有指针运算
+        //即不能通过a加1得到数组的下一个元素
+    }
+
+    public static void ExCMDParam(){
+        //每一个Java应用程序都有一个带String arg[]参数的main方法
+        //这个参数表明接收一个字符串数组，也就是命令行参数
+        //与C++的数组不同，Java的数组是一个类，因此不同与C++的入口函数的两个形参函数
+        //与C++不同，第一个参数不是程序名【即下标为0处】而是第一个参数
+    }
+
+    public static void ExNumGroupSort(){
+        //想要对数值数组进行排序，可以使用Arrays类的sort方法
+        int[] a = new int[]{1,2,54,4,5};
+        Arrays.sort(a);//此方法使用了优化的快速排序算法
+        //Math.random方法将返回一个0-1的不含1的随机浮点数
+        int r = (int)(Math.random() * 10);
+
+        // •static String toString(type[]a) 5.0
+        // 返回包含 a 中数据元素的字符串， 这些数据元素被放在括号内， 并用逗号分隔。
+        // 参数： a 类型为 int、long、short、char、 byte、boolean、float 或 double 的数组。
+        // •static type copyOf(type[]a, int length)6
+        // •static type copyOfRange(type[]a, int start, int end)6
+        // 返回与 a 类型相同的一个数组， 其长度为 length 或者 end-start， 数组元素为 a 的值。
+        // 参数：a 类型为 int、 long、short、char、byte、boolean、float 或 double 的数组。
+        // start 起始下标（包含这个值）
+        // end 终止下标（不包含这个值）。
+        // 这个值可能大于 a.length。在这种情况 下，结果为 0 或 false。
+        // length 的数据元素长度c 如果 length 值大于 a.length， (多的初始化)结果为 0 或 false ; 否则， 数组中只有前面 length 个数据元素的拷W值。 參
+        // static void sort(type[] a)
+        // 采用优化的快速排序算法对数组进行排序。 参数：a 类型为 int、long、short、char、byte、boolean、float 或 double 的数组。
+        // •static int binarySearch(type[] a, type v)
+        // •static int binarySearch(type[]a, int start, int end, type v) 6
+        // 采用二分搜索算法查找值 v。如果查找成功， 则返回相应的下标值；
+        // 否则， 返回一个 负数值 r。-r-1 是为保持 a 有序 v 应插入的位置。
+        // 参数：a 类型为 int、 long、short、 char、 byte、boolean、float 或 double 的有 序数组。
+        // start 起始下标（包含这个值） 。 end 终止下标（不包含这个值)。
+        // v 同 a 的数据元素类型相同的值。
+        // •static void fi11(type[]a, type v)
+        // 将数组的所有数据元素值设置为 V。 参数：a 类型为 int、long、short、char、byte、boolean、float 或 double 的数组。
+        // v 与 a 数据元素类型相同的一个值。
+        // •static boolean equals(type[]a, type[]b)
+        // 如果两个数组大小相同， 并且下标相同的元素都对应相等， 返回 true。 参数：a、 b 类型为 int、long、short、char、byte、boolean、float 或 double 的两个数组。
+
+        //多维数组
+        double[][] balances;
+        //与一维数组一样，在调用new对多维数组进行初始化之前不能使用它
+        //也可以使用下面的初始化方法
+//        int[][] magicSquare = {
+//                {16, 3, 2, 13}，
+//        {5, 10, 11, 8},
+//        (9, 6, 7, 12},
+//        {4, 15, 14, 1} } ；
+
+        //foreach不能自动处理二维数组中的每一个元素，至少需要两个
+        //for(double[] row:a)
+        //  for(double v: row)
+        //要想快速打印一个二维数组的数据元素列表，可以调用
+        //System.out.println(Arrays.deepToString(a));
+
+        //不规则数组
+        //Java实际上没有多维数组，只有一维数组（优势）
+        //所以二维数组并不内存连续！但每一个一维数组内容连续！
+        //因此可以低代价完成数组顺序的交换
+        //因此可以构造每个数组大小不同的二维数组，即不规则数组
+        //1
+        //1 2
+        //1 2 3
+        //1 2 3 4
+
+        //注意：
+        //
+        // double[][] balances = new double[10][6]//Java
+        //不同于
+        // double balances[10][6];//C++
+        //而是分配了一个包含10个指针的数组
+        //double ** balances = new double*[10];//C++
+        //然后，指针数组的每一个元素被填充了一个包含6个数字的数组
+        //不规则数组只能单独创建
+
     }
 }
