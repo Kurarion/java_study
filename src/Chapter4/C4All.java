@@ -6,7 +6,7 @@ import java.time.LocalDate;
 public class C4All {
     public static void main(String[] args) {
         //Do Some
-        SomeThing();
+        //SomeThing();
 
         //Create My class
         ExMyClass();
@@ -153,7 +153,29 @@ public class C4All {
     }
 
     public static void ExMyClass(){
+        //注意不能像使用C++一样
+        //ClassName test1;//C++ 调用了默认的构造函数，并且此对象是在栈内存空间中
+        //ClassName* test1;//C++ 空 nullptr
+        //test1 = new ClassName(...);
+        //等同于
+        //ClassName test1;//Java 未初始化 不使用不会报错
+        //test1 = new ClassName(...);
 
+        ClassName test1 = new ClassName();
+        ClassName test2 = new ClassName();
+        ClassName test3;
+        test1.PrintId();
+        test1.SetId();
+        test1.PrintId();
+        //
+        test2.PrintId();
+        test2.SetId();
+        test2.PrintId();
+        //
+        test1.PrintId();
+
+        //
+        System.out.println(ClassName.GetNextId());
     }
 }
 
@@ -177,6 +199,7 @@ class ClassName{
         //注意：因为Java不许可重叠域中同名变量
         //不推荐在构造器（其他类中方法也是）中定义与实例域重名的局部变量，会屏蔽实例域
 
+        name = "";
     }
     //调用类的对象的方法有隐式与显式的参数，隐式(implicit)的参数是.前面的对象引用变量
     //显式（explicit）的参数是方法的括号内的参数列表
@@ -194,5 +217,105 @@ class ClassName{
 
     //基于类的访问权限
     //p111
+    //前面已经知道方法可以访问所调用对象的私有数据，一个方法可以访问所属类的所有对象的私有数据
+    //注意：是一个类中的方法中可以访问所有此类对象的所有数据成员
+    //例如
+    //class Employee{
+    //public boolean equals(Employee other){
+    //  return name.equals(other.name);
+    //}}
+    //调用方式是
+    //if(harry.equals(boss))
+    //此方法不仅访问了harry的私有成员，也还访问了boss的私有成员，是合法的
+    //两个都是Employee类的对象
+    //C++也有同样的原则：方法可以访问所属类的私有特性，而不仅限于访问隐式参数的私有特性
+
+    //私有方法
+
+    //final实例域
+    //构建对象时必须初始化这样的域：即确保在每一个构造器执行之后，这个域的值被设置
+    //并且在后面的操作中，不能够再对其进行修改
+    private final String name;
+
+    //final修饰符大都应用于基本类型域，或不可变类的域（类中每个方法都不会改变其对象）
+    //例如String类就是一个不可变的类
+    //对于可变的类，使用final可能会对读者造成混乱
+    //例如StringBuilder()的final实例域
+    //只是确定了这个对象的引用不会改变。内存区域不变，但通过这个固定的引用可以更改对象的实质内容
+    //这只不过可能会造成混乱，但不代表不能这样用
+
+
+    //静态域与静态方法
+    //在前面给出的示例程序中，main方法都被标记为static修饰符
+    //如果将域定义为static,每个类中只有一个这样的域，而每一个对象对于所有的实例域却都有自己的一份
+    //拷贝(实际是一个索引，不是仅仅的内容的拷贝)，例如假定需要给每一个雇员几天赋予唯一的标识码，这里给employee类添加一个实例域id
+    //和一个静态域nextId;
+
+    private static int nextId = 1;
+    private int id;
+    public void SetId(){
+
+        int id =2;
+        id = 3;
+        System.out.println(id);
+        this.id = nextId++;
+    }
+    public void PrintId(){
+        System.out.printf("===[%d]=== -> [%d]",id,nextId);
+        System.out.println();
+    }
+
+
+    //现在每一个雇员对象都有自己的id域，但这个类的所有实例将共享一个nextId域
+    //换句话说：如果有1000个此类的对象，则有1000个实例域id，但是只有一个静态域nextId
+    //即使没有一个此类对象，静态域nextId也存在
+    //在绝大多数的面向对象程序设计语言中，静态域被称为类域，static只是没用了C++的叫法
+    //静态变量用得比较少，但静态常量却使用得比较多，例如在Math类中定义了一个静态常量
+    //public class Math
+    //{
+    //  public static final double PI = 3.14....
+    //}
+    //另一个多次使用的静态常量是System.out，它在System类中声明
+    //public static final PrintStream out = ....
+    //因为是常量，因此public可以（其他的成员不推荐），因为out被声明
+    //为final，所以不允许再次其他打印流赋给它
+    //如果查找一下System类，可以发现有一个stOut方法，可以将System.out设置为
+    //不同的流，不需要奇怪可以修改final变量的值，原因是setOut是一个本地方法。而不是用Java语言实现的
+    //本地方法可以绕过Java语言的存取控制机制是一种特殊的方法在自己编程时不应当这样处理
+
+    //静态方法是一种不能向对象实施操作的方法
+    //例如Math的pow方法就是一个静态方法
+    //Math.pow(x, a)
+    //其实相当于没有隐式参数this
+    //但可以访问类中的静态域
+    public static int GetNextId(){
+        return nextId;
+    }
+
+    //Java中的静态域与静态方法在功能上与C++相同，但语法书写有不同
+    //在C++中使用::操作符访问自身作用域之外的静态域和静态方法
+    //如：Math::PI
+    //C++中第一个含义是退出一个块后依然存在的局部变量
+    //static在C中的第二个含义是表示不能被其他文件访问的全局变量和函数
+    //第三个含义与Java一样表示属于类但不属于类对象的变量和函数
+
+    //注意注意：之前提到方法中变量名不能与实例域的一样，实际是可以一样的，区分的方法
+    //是通过隐式的参数this来区分，方法中声明的变量会默认覆盖实例域中的变量
+
+    //工厂方法
+    //静态方法的另一种用途，类似LocalDate和NumberFormat的类使用静态工厂方法来构造对象
+    //例如：LocalDate.now 和 LocalDate.of
+    //使用工厂方法的原因有两个：
+    //1：无法命名构造器：因为与类名一致，但希望能明显区别
+    //2：当使用构造器时无法改变所构造的对象类型：可能需要一个子类
+
+    //main（）方法：
+    //注意：不需要使用对象调用静态方法，main就是一个静态方法
+    //每个类可以有一个main方法，因此常用于对类进行单元测试的技巧
+    //要独立测试类时，只需要java 类名，否则这个类的main方法不会得到自动执行的
+
+
+    //方法参数
+    //p118
 
 }
