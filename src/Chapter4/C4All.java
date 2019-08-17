@@ -12,6 +12,10 @@ public class C4All {
         ExMyClass();
 
         //包p131
+
+        //Other test
+        double a = 1.2;
+        int c = (int)a;
     }
     public static void Print(Object o){
         System.out.println("--------");
